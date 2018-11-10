@@ -49,7 +49,6 @@ int buscarValor(char *);
 %type<val>Expresion //@la expresion tiene type?
 %type<val>Primaria
 %type<text>ID
-%type<text>error
 
 
 %start 	Input
