@@ -55,7 +55,7 @@ int buscarValor(char *);
 
 %%
 
-Input:  INICIO Lista_Sentencias FIN {printf("\nFin del programa.\n");getch();exit(0);}
+Input:  INICIO Lista_Sentencias FIN {printf("\nProgram executed successfully.\n");getch();exit(0);}
 				;
 
 Lista_Sentencias:	Sentencia
@@ -104,20 +104,20 @@ int main(int argc,char **argv) {
     } else if(argc==2){
         yyin = fopen(argv[1], "r");
         if(!yyin){
-            printf("ERROR: no se pudo abrir el archivo. Ingrese otro.");
+            printf("\nERROR: The file couldn't be opened.\n");
             return -1;
           }
         yyparse();
         fclose(yyin);
         }
-    else { printf("ERROR: Parametros incorrectos. Por favor ingrese la cantidad de parametros correcta."); return -2;}
+    else { printf("\nERROR: Incorrect number of parameters to the funtion.\n"); return -2;}
     vaciarVectorNombre();
     return 0;
 }
 
 
 void yyerror(const char *s){
-  printf("Error en linea %d. Mensaje: %s\n",linea,s);
+  printf("Error on line %d. Message: %s\n",linea,s);
   getch();
   exit(-1);
 }
@@ -141,20 +141,20 @@ void declaracionOAsignacion(char *nombre,int valor){
 
 void leer(char *nombre){
     int valor;
-    printf("\nIngrese el valor de %s = ",nombre);
+    printf("\nEnter the value of %s = ",nombre);
     scanf("%d",&valor);
     declaracionOAsignacion(nombre,valor);
 }
 
 void escribir(int valor){
-    printf("\nEl valor calculado es: %d\n",valor);
+    printf("\nResult: %d\n",valor);
 }
 
 int buscarValor(char *nombre){
     int i=0;
-    char mensajeError[100] = "El identificador ";
+    char mensajeError[100] = "Identifier [";
     strcat(mensajeError,nombre);
-    strcat(mensajeError," no existe.\n");
+    strcat(mensajeError,"] doesn't exist.\n");
     if(!existeID(nombre,&i)) yyerror(mensajeError);
     return identificadores[i].valor;
 }
