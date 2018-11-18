@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-//#include <conio.h>
+#include <conio.h>
 #define SIZE 100
 #define IDSIZE 33
 #define YYERROR_VERBOSE 1
@@ -55,7 +55,7 @@ int esUnNumero(char *);
 
 %%
 
-Input:  INICIO Lista_Sentencias FIN {printf("\nProgram executed successfully!.\n");/*getch();*/exit(0);}
+Input:  INICIO Lista_Sentencias FIN {printf("\nProgram executed successfully!.\n");getch();exit(0);}
 				;
 
 Lista_Sentencias:	Sentencia
@@ -118,7 +118,7 @@ int main(int argc,char **argv) {
 
 void yyerror(const char *s){
   printf("Error on line %d. Message: %s\n",linea,s);
-  //getch();
+  getch();
   exit(-1);
 }
 
