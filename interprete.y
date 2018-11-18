@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
+//#include <conio.h>
 #define SIZE 100
 #define IDSIZE 33
 #define YYERROR_VERBOSE 1
@@ -24,7 +24,7 @@ void declaracionOAsignacion(char *,int );
 void leer(char *);
 void escribir(int);
 int buscarValor(char *);
-
+int esUnNumero(char *);
 
 %}
 
@@ -36,10 +36,10 @@ int buscarValor(char *);
 
 %token 	<val>INTEGER
 %token 	SUMA RESTA
+%token 	FIN_SENTENCIA
 %token 	PARENT_IZQ 		PARENT_DER
 %token 	ASIGNACION
 %token 	COMA
-%token 	FIN_SENTENCIA
 %token 	INICIO 			FIN
 %token 	LEER 			ESCRIBIR
 %token  ID
@@ -55,7 +55,7 @@ int buscarValor(char *);
 
 %%
 
-Input:  INICIO Lista_Sentencias FIN {printf("\nProgram executed successfully.\n");getch();exit(0);}
+Input:  INICIO Lista_Sentencias FIN {printf("\nProgram executed successfully!.\n");/*getch();*/exit(0);}
 				;
 
 Lista_Sentencias:	Sentencia
@@ -72,7 +72,7 @@ Lista_Ids:  ID { leer($1); }
 					;
 
 Lista_Expr:	Expresion { escribir($1); }
-					| Lista_Expr COMA Expresion {  escribir($3);  }
+					| Lista_Expr COMA Expresion { escribir($3); }
 					;
 
 Expresion:	Primaria { $$=$1; }
@@ -93,7 +93,7 @@ void inicializarVectorNombre(void){
 }
 
 void vaciarVectorNombre(void){
-    for (int i=0;i<SIZE;i++) free(identificadores[i].nombre); 
+    for (int i=0;i<SIZE;i++) free(identificadores[i].nombre);
 }
 
 int main(int argc,char **argv) {
@@ -118,7 +118,7 @@ int main(int argc,char **argv) {
 
 void yyerror(const char *s){
   printf("Error on line %d. Message: %s\n",linea,s);
-  getch();
+  //getch();
   exit(-1);
 }
 
@@ -140,10 +140,21 @@ void declaracionOAsignacion(char *nombre,int valor){
 }
 
 void leer(char *nombre){
-    int valor;
+    char valor[30];
     printf("\nEnter the value of %s = ",nombre);
-    scanf("%d",&valor);
-    declaracionOAsignacion(nombre,valor);
+    scanf("%s\n",valor);
+    if(!esUnNumero(valor)) yyerror("The value is not a number.");
+    declaracionOAsignacion(nombre,atoi(valor));
+}
+
+int esUnNumero(char *numero){
+    int i=0;
+    if(*(numero+i)=='-' || *(numero+i)=='+')  i++;
+    while(*(numero+i)!='\0'){
+        if(*(numero+i) >= '0' && *(numero+i) <='9')i++;
+        else return 0; // Cuando falla
+    }
+    return 1;
 }
 
 void escribir(int valor){
