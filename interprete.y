@@ -46,7 +46,7 @@ int esUnNumero(char *);
 
 %left 	SUMA RESTA
 
-%type<val>Expresion //@la expresion tiene type?
+%type<val>Expresion
 %type<val>Primaria
 %type<text>ID
 
@@ -142,7 +142,7 @@ void declaracionOAsignacion(char *nombre,int valor){
 void leer(char *nombre){
     char valor[30];
     printf("\nEnter the value of %s = ",nombre);
-    scanf("%s\n",valor);
+    scanf("%s",valor);
     if(!esUnNumero(valor)) yyerror("The value is not a number.");
     declaracionOAsignacion(nombre,atoi(valor));
 }

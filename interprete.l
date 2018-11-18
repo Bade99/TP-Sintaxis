@@ -16,6 +16,8 @@ integer [0-9]+
 suma [+]+
 resta -(--)*
 suma_resta (--)+
+error_cons [!-&.<-@\]*[0-9][a-zA-Z0-9!-&.<-@]+[0-9]*
+error_sym [!-&.<-@\]+
 
 %%
 {espacio} {;}
@@ -35,5 +37,7 @@ suma_resta (--)+
 ":="				return(ASIGNACION);
 ","					return(COMA);
 ";"					return(FIN_SENTENCIA);
+{error_cons}				{yyerror("The value is not a number.");}
+{error_sym}         {yyerror("Unacceptable character.");}
 
 %%
